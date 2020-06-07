@@ -1,0 +1,1 @@
+{"version":3,"file":"vue.js","sources":["../../src/index.js"],"sourcesContent":["const Vue = () => {\n  console.log(\"hello world\");\n}\nVue();"],"names":["Vue","console","log"],"mappings":";;;;;EAAA,IAAMA,GAAG,GAAG,SAANA,GAAM,GAAM;EAChBC,EAAAA,OAAO,CAACC,GAAR,CAAY,aAAZ;EACD,CAFD;;EAGAF,GAAG;;;;"}
