@@ -1,4 +1,10 @@
-const Vue = () => {
-  console.log("hello world");
+import { initMixin } from "./instance/init";
+
+function Vue(opts) {
+  this._init(opts);
 }
-Vue();
+
+// Vue原型添加_init方法
+initMixin(Vue);
+
+export default Vue;
