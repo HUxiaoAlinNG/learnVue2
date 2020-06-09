@@ -10,6 +10,17 @@ export function initState(vm) {
   if (opts.watch) initWatch(vm, opts.watch);
 }
 
+function proxy(vm, source, key) {
+  Object.defineProperty(vm, key, {
+    get() {
+      return vm[source][key];
+    },
+    set(newVal) {
+      vm[source][key] = newVal;
+    }
+  })
+}
+
 // TODO
 // 初始化props
 function initProps(vm, props) {
@@ -28,6 +39,10 @@ function initData(vm) {
   debugger;
   let data = vm.$options.data;
   data = vm._data = typeof vm.$options.data === "function" ? data.call(vm) : data;
+  // 将_data全部代理给vm，方便获取data
+  for (let key in data) {
+    proxy(vm, "_data", key);
+  }
   // 绑定data
   observe(data);
 }
