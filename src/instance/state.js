@@ -33,10 +33,8 @@ function initMethods(vm, methods) {
 
 }
 
-// TODO
 // 初始化data
 function initData(vm) {
-  debugger;
   let data = vm.$options.data;
   data = vm._data = typeof vm.$options.data === "function" ? data.call(vm) : data;
   // 将_data全部代理给vm，方便获取data

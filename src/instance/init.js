@@ -7,6 +7,9 @@ export function initMixin(Vue) {
     vm.$options = opts;
     console.log("opts", opts);
     initState(vm);
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el);
+    }
   }
 
   Vue.prototype.$mount = function (el) {
@@ -16,7 +19,7 @@ export function initMixin(Vue) {
     if (!el) {
       throw new Error("can't get el");
     }
-
+    // 优先级：render > template > el的内容
     if (!opts.render) {
       const template = opts.template || el.outerHTML;
       opts.render = compileToFunctions(template);
