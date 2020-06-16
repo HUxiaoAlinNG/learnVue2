@@ -7,9 +7,9 @@ const startTagOpen = new RegExp(`^<${qnameCapture}`);  // 匹配标签开头，�
 const startTagClose = /^\s*(\/?)>/;  // 匹配标签结尾的>
 const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`);  // 匹配标签结尾，捕获标签名
 
-const ELEMENT_TYPE = 1;
-// const TEXT_EXPRESSTION_TYPE = 2;
-const TEXT_TYPE = 3;
+export const ELEMENT_TYPE = 1;
+// const TEXT_EXPRESSTION_TYPE = 2;  // 在code-gen.js实现
+export const TEXT_TYPE = 3;
 let root;
 let currentParent;
 // 用栈的方式构造父子关系

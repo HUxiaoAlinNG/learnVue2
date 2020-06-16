@@ -23,6 +23,7 @@ export function initMixin(Vue) {
     if (!opts.render) {
       const template = opts.template || el.outerHTML;
       opts.render = compileToFunctions(template);
+      console.log(opts.render.toString());
     }
   }
 }
