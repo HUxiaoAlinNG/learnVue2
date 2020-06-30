@@ -1,5 +1,6 @@
 import { initState } from "./state";
 import { compileToFunctions } from "../compile/index";
+import { mountComponent } from "./lifecycle";
 
 export function initMixin(Vue) {
   Vue.prototype._init = function (opts) {
@@ -23,7 +24,9 @@ export function initMixin(Vue) {
     if (!opts.render) {
       const template = opts.template || el.outerHTML;
       opts.render = compileToFunctions(template);
-      console.log(opts.render.toString());
+      console.log("opts.render", opts.render.toString());
     }
+
+    mountComponent(vm, el);
   }
 }

@@ -1,4 +1,4 @@
-import { observe } from "../observer/watcher";
+import { observe } from "../observer/index";
 
 
 export function initState(vm) {
