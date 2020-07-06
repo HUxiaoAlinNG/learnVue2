@@ -1,4 +1,5 @@
 import Watcher from "../observer/watcher";
+import { patch } from "../observer/patch";
 
 export function mountComponent(vm, el) {
   vm.$el = el;
@@ -12,9 +13,8 @@ export function mountComponent(vm, el) {
 export function lifecycleMixin(Vue) {
   // 通过虚拟dom来创建真实dom
   Vue.prototype._update = function (vnode) {
-    debugger;
     console.log("vnode", vnode);
-    // const vm = this;
-    // vm.$el = patch(vm.$el, vnode);
+    const vm = this;
+    vm.$el = patch(vm.$el, vnode);
   }
 }

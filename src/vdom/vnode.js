@@ -1,7 +1,9 @@
-class VNode {
-  constructor(tag, data, key, children, text) {
-
+// 生成vnode
+export function vnode(tag, data, children, text) {
+  return {
+    tag,
+    data,
+    children,
+    text,
   }
-}
-
-export default VNode;
+};

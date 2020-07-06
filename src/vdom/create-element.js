@@ -1,13 +1,9 @@
-import VNode from "./vnode";
+import { vnode } from "./vnode";
 
 export function createElement(tag, data = {}, ...children) {
-  const key = data.key;
-  if (key) {
-    delete data.key;
-  }
-  return new VNode(tag, data, key, children);
+  return vnode(tag, data, children);
 }
 
 export function createTextVNode(text) {
-  return new VNode(undefined, undefined, undefined, undefined, text);
+  return vnode(undefined, undefined, undefined, text);
 }
