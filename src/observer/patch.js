@@ -9,22 +9,22 @@ export function patch(oldVNode, VNode) {
   }
 }
 
-function createElm(vnode) {
-  const { tag, children, text } = vnode;
+function createElm(VNode) {
+  const { tag, children, text } = VNode;
   if (typeof tag === 'string') {
-    vnode.el = document.createElement(tag);
-    updateProperties(vnode);
+    VNode.el = document.createElement(tag);
+    updateProperties(VNode);
     children.forEach(child => {
-      return vnode.el.appendChild(createElm(child));
+      VNode.el.appendChild(createElm(child));
     });
   } else {
-    vnode.el = document.createTextNode(text);
+    VNode.el = document.createTextNode(text);
   }
-  return vnode.el;
+  return VNode.el;
 }
-function updateProperties(vnode) {
-  const newProps = vnode.data || {};
-  const el = vnode.el;
+function updateProperties(VNode) {
+  const newProps = VNode.data || {};
+  const el = VNode.el;
   for (const key in newProps) {
     if (key === 'style') {
       for (const styleName in newProps.style) {

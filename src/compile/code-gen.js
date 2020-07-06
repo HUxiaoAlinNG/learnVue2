@@ -40,7 +40,7 @@ function genProps(attrsList) {
 function genChildren(el) {
   const children = el.children;
   if (children && children.length) {
-    return `[${children.map(c => gen(c)).join(',')}]`
+    return `${children.map(c => gen(c)).join(',')}`
   }
   return "";
 }
@@ -63,7 +63,7 @@ function gen(node) {
       if (match.index > lastIndex) {
         token.push(JSON.stringify(text.slice(lastIndex, match.index)))
       }
-      token.push(JSON.stringify(`_s(${match[1].trim()})`));
+      token.push(`_s(${match[1].trim()})`);
       lastIndex = match.index + match[0].length;
     }
     if (lastIndex < text.length) {
