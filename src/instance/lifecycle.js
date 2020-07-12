@@ -18,3 +18,11 @@ export function lifecycleMixin(Vue) {
     vm.$el = patch(vm.$el, vnode);
   }
 }
+
+// 调用生命周期函数
+export function callHook(vm, hook) {
+  const hookHandlers = vm.$options[hook];
+  if (Array.isArray(hookHandlers) && hookHandlers.length) {
+    hookHandlers.forEach(handler => handler.call(vm));
+  }
+}
