@@ -36,6 +36,8 @@ methodsToPatch.forEach(method => {
       ob.observeArray(inserted);
     }
 
+    // 取出Observer实例上的dep，通知渲染
+    ob.dep.notice();
     return arrRes;
   }
 });
