@@ -9,9 +9,9 @@ export function initMixin(Vue) {
     vm.$options = mergeOptions(vm.constructor.options, opts);
     console.log("vm.$options", vm.$options)
 
-    callHook("beforeCreate");
+    callHook(vm, "beforeCreate");
     initState(vm);
-    callHook("created");
+    callHook(vm, "created");
     if (vm.$options.el) {
       vm.$mount(vm.$options.el);
     }
