@@ -45,7 +45,20 @@ export function def(data, key, value, enumerable) {
 }
 
 // 合并属性
-export function mergeOptions(parent, child) {
+export function mergeOptions(parent, child, vm) {
+  // 1.组件先将自己的extends和mixin与父属性合并
+  if (!child._base) {
+    if (child.extends) {
+      parent = mergeOptions(parent, child.extends, vm)
+    }
+    if (child.mixins) {
+      for (let i = 0, l = child.mixins.length; i < l; i++) {
+        parent = mergeOptions(parent, child.mixins[i], vm)
+      }
+    }
+  }
+
+  // 2.再用之前合并后的结果，与自身的属性进行合并
   const options = {};
   for (const key in parent) {
     mergeField(key);

@@ -1,4 +1,5 @@
 import { isObject, def } from "../util/index";
+import { isValidArrayIndex, hasOwn } from "../shared/util";
 import { arrayMethods } from "./array";
 import Dep from "./dep";
 
@@ -32,7 +33,7 @@ class Observer {
   }
 }
 
-function defineReactive(data, key, value) {
+export function defineReactive(data, key, value) {
   // 进行递归劫持属性
   const childObj = observe(value);
   const dep = new Dep();
@@ -80,4 +81,53 @@ function dependArray(arr) {
       dependArray(e)
     }
   }
+}
+
+// 为了绑定公有方法$set
+export function set(target, key, val) {
+  // 1.数组，调重写后的splice方法(更新视图)
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.splice(key, 1, val);
+    return val;
+  }
+  // 2.对象本身属性，直接设置
+  if (key in target && !(key in Object.prototype)) {
+    target[key] = val;
+    return val;
+  }
+  const ob = target.__ob__;
+  // 3.没有绑定过，不管。直接设置
+  if (!ob) {
+    target[key] = val;
+    return val;
+  }
+  // 4.设置属性为响应式
+  defineReactive(ob.value, key, val);
+  // 更新视图
+  ob.dep.notice();
+  return val;
+}
+
+// 为了绑定公有方法$del
+export function del(target, key) {
+  // 1.数组，调用重写的splice方法删除(更新视图)
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.splice(key, 1);
+    return;
+  }
+
+  // 2.若对象没有该属性，直接返回
+  if (!hasOwn(target, key)) {
+    return
+  }
+
+  const ob = target.__ob__;
+  // 3.删除key
+  delete target.key;
+  // 4.没有监听过，则直接返回
+  if (!ob) {
+    return
+  }
+  // 5.通知更新
+  ob.dep.notice();
 }
