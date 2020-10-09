@@ -54,6 +54,7 @@ export function initGlobalAPI(Vue) {
   }
 
   // 可以通过传入的对象获取这个对象的构造函数
+  // 创建出一个子类，继承于Vue,并返回这个类
   Vue.extend = function (extendOptions) {
     extendOptions = extendOptions || {};
     const Super = this;
