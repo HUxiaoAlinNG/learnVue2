@@ -12,6 +12,7 @@ export function initMixin(Vue) {
     callHook(vm, "beforeCreate");
     initState(vm);
     callHook(vm, "created");
+    // 若传入el，则进行模板渲染
     if (vm.$options.el) {
       vm.$mount(vm.$options.el);
     }
@@ -26,7 +27,9 @@ export function initMixin(Vue) {
     }
     // 优先级：render > template > el的内容
     if (!opts.render) {
+      // element.outerHTML 获取 序列化HTML片段
       const template = opts.template || el.outerHTML;
+      // 转换为render
       opts.render = compileToFunctions(template);
       console.log("opts.render", opts.render.toString());
     }

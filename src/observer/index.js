@@ -6,9 +6,11 @@ import Dep from "./dep";
 class Observer {
   constructor(data) {
     // 给监听过的数据添加__ob__属性，并且设置不可枚举(避免遍历属性时无限循环),设置value为Observer实例，从而可以访问实例上的方法
+    // 改写的 数组原型方法 就用到了该属性
     def(data, "__ob__", this, false);
     // 为了给数组收集watcher
     this.dep = new Dep();
+    // 对象和数组采用不同的监听方法，数据通过改写原型的方式(为了性能着想)，不监听索引，所以不能通过修改索引的方式修改数组值(例如：arr[0]=1)，并且由于length无法用Object.defineProperty进行监听
     if (Array.isArray(data)) {
       // 覆盖原型
       data.__proto__ = arrayMethods;
@@ -33,6 +35,7 @@ class Observer {
   }
 }
 
+// 数据劫持
 export function defineReactive(data, key, value) {
   // 进行递归劫持属性
   const childObj = observe(value);
@@ -66,6 +69,7 @@ export function defineReactive(data, key, value) {
   })
 }
 
+// 绑定data
 export function observe(data) {
   if (!isObject(data)) {
     return;

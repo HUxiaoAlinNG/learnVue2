@@ -7,14 +7,17 @@ const startTagOpen = new RegExp(`^<${qnameCapture}`);  // 匹配标签开头，�
 const startTagClose = /^\s*(\/?)>/;  // 匹配标签结尾的>
 const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`);  // 匹配标签结尾，捕获标签名
 
+// 元素类型为 1
 export const ELEMENT_TYPE = 1;
 // const TEXT_EXPRESSTION_TYPE = 2;  // 在code-gen.js实现
+// 文本类型为 3
 export const TEXT_TYPE = 3;
 let root;
 let currentParent;
 // 用栈的方式构造父子关系
 const stack = [];
 
+// 创建ast树
 function createASTElement(tag, attrs) {
   return {
     type: ELEMENT_TYPE,
@@ -44,6 +47,7 @@ function end() {
   }
 }
 
+// 解析文本为ast
 function chars(text) {
   text = text.replace(/\s/g, "");
   if (text) {
@@ -54,6 +58,8 @@ function chars(text) {
     });
   }
 }
+
+// 解析dom元素为ast语法树
 export function parseHTML(html) {
   console.log("===", html)
   while (html) {
@@ -81,6 +87,8 @@ export function parseHTML(html) {
       chars(text);
     }
   }
+
+  // 解析开始标签
   function parseStartTag() {
     const start = html.match(startTagOpen);
     if (start) {
@@ -96,6 +104,7 @@ export function parseHTML(html) {
         match.attrs.push({ name: attr[1], value: attr[3] });
         advance(attr[0].length);
       }
+      // 结束标签 >
       end && advance(end[0].length);
       return match;
     }

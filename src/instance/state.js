@@ -1,6 +1,6 @@
 import { observe } from "../observer/index";
 
-
+// 初始化options上的 props/methods/data/computed/watch
 export function initState(vm) {
   const opts = vm.$options;
   if (opts.props) initProps(vm, opts.props);

@@ -15,7 +15,7 @@ export default {
     process.env.ENV === "development" ? serve({
       open: true,
       openPage: "/show/index.html",
-      port: 9000,
+      port: 10000,
       contentBase: ""
     }) : null
   ]
