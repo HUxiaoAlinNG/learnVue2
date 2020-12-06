@@ -45,7 +45,7 @@ export function defineReactive(data, key, value) {
       // 如果取值时有watcher，则让watcher收集dep，dep收集watcher
       if (Dep.target) {
         dep.depend();
-        // 收集数组依赖
+        // 收集数组依赖(对象也会收集，不过由于watcher有去重机制，所以不会重复收集依赖)
         if (childObj) {
           childObj.dep.depend();
           // 若值为数组，继续收集依赖

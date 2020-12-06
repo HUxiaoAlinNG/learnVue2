@@ -11,10 +11,31 @@
   <div id="app" style="color: red;height:800px">
     test
     <p id="p" attr="test">test</p>
-    <p>ab {{name}} cd</p>
+    <p>ab {{name}} cd {{age}}</p>
+    <test-component></test-component>
+    <test-component></test-component>
+    <test-component></test-component>
   </div>
   <script src="../dist/umd/vue.js"></script>
   <script>
+    Vue.component('test-component', {
+      template: "<div>组件 全局</div>"
+    });
+    Vue.mixin({
+      beforeCreate() {
+        console.log("beforeCreate mixin");
+      },
+      created() {
+        console.log("created mixin");
+      },
+      beforeMount() {
+        console.log("beforeMount mixin");
+      },
+      mounted() {
+        console.log("mounted mixin");
+      }
+    });
+
     const vm = new Vue({
       el: "#app",
       data() {
@@ -25,11 +46,57 @@
         }
       },
       beforeCreate() {
-        console.log(1);
+        console.log("beforeCreate app", this.name);
       },
+      created() {
+        console.log("created app", this.name);
+      },
+      beforeMount() {
+        console.log("beforeMount app", this.$el);
+      },
+      mounted() {
+        console.log("mounted app", this.$el);
+      },
+      components: {
+        'test-component': {
+          template: "<div>组件 自身<test-component1></test-component1></div>",
+          beforeCreate() {
+            console.log("beforeCreate test-component");
+          },
+          created() {
+            console.log("created test-component");
+          },
+          beforeMount() {
+            console.log("beforeMount test-component", this.$el);
+          },
+          mounted() {
+            console.log("mounted test-component", this.$el);
+          },
+          components: {
+            'test-component1': {
+              template: "<div>组件 字元素 自身</div>",
+              beforeCreate() {
+                console.log("beforeCreate test-component1");
+              },
+              created() {
+                console.log("created test-component1");
+              },
+              beforeMount() {
+                console.log("beforeMount test-component1", this.$el);
+              },
+              mounted() {
+                console.log("mounted test-component1", this.$el);
+              },
+            }
+          }
+        }
+      }
     });
+
     window.vm = vm;
-    console.log("vm", vm._data);
+    setTimeout(() => {
+      vm.age = 20;
+    }, 1000)
   </script>
 </body>
 

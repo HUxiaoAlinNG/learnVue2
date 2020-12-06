@@ -5,17 +5,19 @@ class Dep {
     this.subs = [];
   }
 
+  // 让watcher收集dep 
   depend() {
-    // 让watcher收集dep
     if (Dep.target) {
       Dep.target.addDep(this);
     }
   }
 
+  // 通知watcher进行更新
   notice() {
     this.subs.forEach(watcher => watcher.update());
   }
 
+  // 添加watcher
   addSub(target) {
     this.subs.push(target);
   }

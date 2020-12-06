@@ -11,6 +11,7 @@ function Vue(opts) {
 initMixin(Vue);
 // 添加_render方法
 renderMixin(Vue);
+// 添加 _update方法
 lifecycleMixin(Vue);
 
 // 初始化全局变量

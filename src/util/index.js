@@ -1,3 +1,5 @@
+import { ASSET_TYPES } from "../shared/constants";
+
 export const LIFECYCLE_HOOKS = [
   "beforeCreate",
   "created",
@@ -13,6 +15,10 @@ export const LIFECYCLE_HOOKS = [
   "serverPrefetch"
 ];
 const strats = {};
+
+// 生命周期属性特殊处理
+LIFECYCLE_HOOKS.forEach(hook => strats[hook] = mergeHook);
+
 // 合并生命周期属性
 function mergeHook(parentVal, childVal) {
   if (childVal) {
@@ -25,8 +31,19 @@ function mergeHook(parentVal, childVal) {
   return parentVal;
 }
 
-// 生命周期属性特殊处理
-LIFECYCLE_HOOKS.forEach(hook => strats[hook] = mergeHook);
+ASSET_TYPES.forEach(asset => strats[asset + 's'] = mergeAsset);
+
+// 合并 组件/指令/过滤器属性
+function mergeAsset(parentVal, childVal) {
+  const res = Object.create(parentVal || null);
+  if (childVal) {
+    for (let key in childVal) {
+      res[key] = childVal[key];
+    }
+  }
+  return res;
+}
+
 
 export function isObject(value) {
   if (typeof value === "object" && value !== null) {
@@ -64,11 +81,13 @@ export function mergeOptions(parent, child, vm) {
     mergeField(key);
   }
   for (const key in child) {
+    // 过滤已经合并过的key
     if (!parent.hasOwnProperty(key)) {
       mergeField(key);
     }
   }
 
+  // 三种合并策略，普通合并策略 、 生命周期合并策略 和 注册器(组件/指令/过滤器)合并策略
   function mergeField(key) {
     if (strats[key]) {
       options[key] = strats[key](parent[key], child[key]);

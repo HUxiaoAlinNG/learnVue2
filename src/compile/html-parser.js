@@ -12,6 +12,7 @@ export const ELEMENT_TYPE = 1;
 // const TEXT_EXPRESSTION_TYPE = 2;  // 在code-gen.js实现
 // 文本类型为 3
 export const TEXT_TYPE = 3;
+// 记录根节点ast
 let root;
 let currentParent;
 // 用栈的方式构造父子关系
@@ -61,10 +62,12 @@ function chars(text) {
 
 // 解析dom元素为ast语法树
 export function parseHTML(html) {
-  console.log("===", html)
+  // 重置
+  root = null;
+  // 循环解析html片段
   while (html) {
     let textEnd = html.indexOf("<");
-    // 标签开头< (可能为开始标签或结束标签)
+    // 解析标签开头< (可能为开始标签或结束标签)
     if (textEnd === 0) {
       const startMatch = parseStartTag();
       if (startMatch) {
@@ -92,6 +95,7 @@ export function parseHTML(html) {
   function parseStartTag() {
     const start = html.match(startTagOpen);
     if (start) {
+      // 存放 匹配到的 标签名 和 标签内部属性
       const match = {
         tagName: start[1],
         attrs: []

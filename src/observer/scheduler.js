@@ -21,7 +21,7 @@ export function queueWatcher(watcher) {
     has[id] = true;
     if (!waiting) {
       queue.push(watcher);
-      nextTick(flushSchedulerQueue)
+      nextTick(flushSchedulerQueue);
     }
   }
 }
