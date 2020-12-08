@@ -19,6 +19,7 @@ export function initMixin(Vue) {
     }
   }
 
+  // 原始真实dom =》 ast =》 render =》 虚拟dom =》 真实dom
   Vue.prototype.$mount = function (el) {
     const vm = this;
     const opts = vm.$options;

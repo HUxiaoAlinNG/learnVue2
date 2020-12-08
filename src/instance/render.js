@@ -20,7 +20,7 @@ function installRenderHelpers(target) {
 export function renderMixin(Vue) {
   installRenderHelpers(Vue.prototype)
 
-  // 执行render汗水，通过解析出来的_render来渲染虚拟dom
+  // 执行render函数，通过解析出来的_render来渲染虚拟dom
   Vue.prototype._render = function () {
     const vm = this;
     const { render } = vm.$options;

@@ -21,7 +21,15 @@ export function lifecycleMixin(Vue) {
   Vue.prototype._update = function (vnode) {
     console.log("原始虚拟dom vnode\n", vnode);
     const vm = this;
-    vm.$el = patch(vm.$el, vnode);
+    const preVNode = vm._vnode;
+    vm._vnode = vnode;
+    if (preVNode) {
+      // dom diff操作
+      vm.$el = patch(preVNode, vnode);
+    } else {
+      // 需要用虚拟节点创建出真实节点 替换掉 真实的$el
+      vm.$el = patch(vm.$el, vnode);
+    }
   }
 }
 
