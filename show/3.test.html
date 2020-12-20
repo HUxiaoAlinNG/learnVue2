@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>{{test.render}}</div>
+    <div>{{test.a}}</div>
+    <!-- 只会渲染一次，后续更改属性不会再渲染 -->
+    <div v-once>{{test.a}}</div>
+    <div v-if="true">hello</div>
+    <div v-else>world</div>
+    <!-- 解析处理的是内置指令，存放于directives中 -->
+    <div v-show>show</div>
+    <!-- v-for和v-if尽量不要连用，优先级问题，会影响性能。需使用计算属性来解决该类问题 -->
+    <!-- v-for的key对于经常变动的元素，别用索引 -->
+    <div v-for="(item,index) of test.c" :key="index" v-if="index == 2">
+      {{item}}
+    </div>
+    <input v-test-focus :value="test.a" />
+  </div>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          fn() {
+            return "fn";
+          },
+          test: {
+            a: 1,
+            c: [1, 2, 3],
+            render: "",
+          },
+        }
+      },
+      directives: {
+        testFocus: {
+          bind(el, bindings, vnode, oldVnode) {
+            el.focus();
+            const handle = (e) => {
+              vm.test.a = e.target.value;
+              console.log(vnode);
+              if (e.target.value.includes("test")) {
+                el.style.backgroundColor = "red";
+                vm.test.c.splice(2, 1, "test");
+              }
+            }
+            document.addEventListener("input", handle);
+          }
+        },
+        unbind(el, bindings, vnode, oldVnode) {
+          document.removeEventListener("input");
+        }
+      }
+    });
+    window.vm = vm;
+    setTimeout(() => {
+      vm.test.a = 2;
+    }, 1000)
+  </script>
+  <!-- 查看解析后的render -->
+  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+  <script>
+    require(['../node_modules/vue-template-compiler/browser.js'], function (compiler) {
+
+      const testHtml = `
+      <div id="app">
+        <div>{{test.a}}</div>
+        <div v-once>{{test.a}}</div>
+        <div v-if="true">hello</div>
+        <div v-else>world</div>
+        <div v-show>show</div>
+        <div v-for="(item,index) of test.c" :key="index" v-if="index == 2">
+          {{item}}
+        </div>
+        <input v-test-focus :value="test.a" />
+      </div>
+      `
+      render = compiler.compile(testHtml).render;
+      vm.test.render = render;
+    });
+  </script>
+</body>
+
+</html>

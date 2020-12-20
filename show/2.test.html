@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 函数执行 -->
+    {{fn()}}
+    <!-- 三元表达式 -->
+    {{(100+2 > 100) ? "yes":"no" }}
+    <!-- 运算结果 -->
+    {{100+2}}
+
+    <div>{{test}}</div>
+    <div>{{test.a}}</div>
+    <div>{{test.b}}</div>
+    <div>{{test.c}}</div>
+    <div>{{msg}}</div>
+  </div>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      data() {
+        return {
+          fn() {
+            return "fn";
+          },
+          test: {
+            a: 1,
+            c: [],
+          },
+        }
+      },
+    });
+    window.vm = vm;
+    // 新增属性，不会触发渲染
+    //setTimeout(() => {
+    //  vm.test.b = 1000;
+    //}, 1000);
+
+    // 但是可以 通过更改其他属性方式进行触发
+    //setTimeout(() => {
+    //  vm.test.a = 100;
+    //  vm.test.b = 1000;
+    //}, 1000);
+
+    // 正确方式1
+    //setTimeout(() => {
+    //  vm.test = {
+    //  ...vm.test,
+    // b: 1000,
+    // }
+    //}, 1000)
+
+    // 正确方式2
+    //setTimeout(() => {
+    //  vm.$set(vm.test, "b", 1000)
+    //}, 1000)
+
+    // 初次渲染会定义一个渲染watcher，通过$watch定义自定义watcher
+    vm.$watch('test.a', (newVal, oldVal) => {
+      console.log(oldVal, newVal);
+    });
+    setTimeout(() => {
+      vm.test.a = 20;
+      vm.test.a = 30;
+      vm.msg = 3;
+      vm.$mount("#app");
+      vm.msg = 4;
+    }, 1000)
+
+  </script>
+</body>
+
+</html>

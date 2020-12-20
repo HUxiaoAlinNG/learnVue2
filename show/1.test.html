@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    {{dom}}
+  </div>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <!-- 1.优先查找render -->
+  <!-- <script>
+    let vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          dom: "dom",
+          template: "template",
+          render: "render",
+        }
+      },
+      template: "<h2>{{template}}</h2>",
+      render(h) {
+        return h("h1", {}, this.render);
+      }
+    })
+  </script> -->
+
+  <!-- 2.其次查找 template -->
+  <!-- <script>
+    let vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          dom: "dom",
+          template: "template",
+          render: "render",
+        }
+      },
+      template: "<h2>{{template}}</h2>",
+    })
+  </script> -->
+
+  <!-- 3. 最后查找 el -->
+  <script>
+    let vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          dom: "dom",
+          template: "template",
+          render: "render",
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>
